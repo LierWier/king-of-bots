@@ -1,15 +1,16 @@
 <template>
   <my-card class="container mt-3">
-    对战
+    <play-ground />
   </my-card>
 </template>
 
 <script>
 import MyCard from "@/components/utils/MyCard";
+import PlayGround from "@/components/PlayGround";
 
 export default {
   name: "BattleIndexView",
-  components: {MyCard}
+  components: {PlayGround, MyCard}
 }
 </script>
 

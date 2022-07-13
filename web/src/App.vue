@@ -5,7 +5,7 @@
 
 <style>
 body {
-  background: url("assets/background_photo_defult.jpg") fixed;
+  background: url("assets/images/background_photo_defult.jpg") fixed;
   background-size: cover;
   width: 100%;
   height: 100%;
