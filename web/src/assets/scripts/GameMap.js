@@ -154,7 +154,8 @@ export class GameMap extends AcGameObject {
     check_valid(cell) {
         // 判断是否撞墙
         for (const wall of this.walls) {
-            if (wall.r === cell.r && wall.c === cell.c) {
+            // !!!wall里的数据是字符串，cell里的数据是数字，所以加 ~~ 将wall.r和wall.c变成数字再比较
+            if (~~wall.r === cell.r && ~~wall.c === cell.c) {
                 return false
             }
         }
