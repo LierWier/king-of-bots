@@ -48,7 +48,7 @@ export class GameMap extends AcGameObject {
 
     // 创建墙函数
     create_walls() {
-        // 初试布尔数组
+        // 初始布尔数组
         let g = []
         for (let r = 0; r < this.rows; r++) {
             g[r] = []
@@ -92,10 +92,10 @@ export class GameMap extends AcGameObject {
         if (!this.check_connectivity(copy_g, this.rows - 2, 1, 1, this.cols - 2)) return false
 
         // 生成墙
-        for (const r in g) {
-            for (const c in g[r]) {
+        for (let r = 0; r < this.rows; r ++ ) {
+            for (let c = 0; c < this.cols; c ++ ) {
                 if (g[r][c]) {
-                    this.walls.push(new Wall(r, c, this))
+                    this.walls.push(new Wall(r, c, this));
                 }
             }
         }
@@ -154,8 +154,7 @@ export class GameMap extends AcGameObject {
     check_valid(cell) {
         // 判断是否撞墙
         for (const wall of this.walls) {
-            // !!!wall里的数据是字符串，cell里的数据是数字，所以加 ~~ 将wall.r和wall.c变成数字再比较
-            if (~~wall.r === cell.r && ~~wall.c === cell.c) {
+            if (wall.r === cell.r && wall.c === cell.c) {
                 return false
             }
         }
