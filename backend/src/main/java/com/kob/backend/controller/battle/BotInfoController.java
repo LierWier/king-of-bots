@@ -1,4 +1,4 @@
-package com.kob.backend.controller.pk;
+package com.kob.backend.controller.battle;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/pk")
+@RequestMapping("/battle")
 public class BotInfoController {
     @RequestMapping("/getbotinfo")
     public Map<String, String> getBotInfo() {
