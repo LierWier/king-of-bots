@@ -40,6 +40,7 @@ const ModuleUser = {
                 success(resp) {
                     if (resp.error_message === 'success') {
                         context.commit("updateToken", resp.token)
+                        localStorage.setItem("jwt_token", resp.token)
                         data.success(resp)
                     } else {
                         data.error(resp)
@@ -76,30 +77,9 @@ const ModuleUser = {
         },
 
         logout(context) {
+            localStorage.removeItem("jwt_token")
             context.commit("logout")
         },
-
-        register(context, data) {
-            $.ajax({
-                url: "http://127.0.0.1:3000/user/account/register/",
-                type: "post",
-                data: {
-                    username: data.username,
-                    password: data.password,
-                    confirmedPassword: data.confirmedPassword,
-                },
-                success(resp) {
-                    if (resp.error_message === 'success') {
-                        data.success(resp)
-                    } else {
-                        data.error(resp)
-                    }
-                },
-                error(resp) {
-                    data.error(resp)
-                }
-            })
-        }
     },
     modules: {
     }

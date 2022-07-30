@@ -6,42 +6,50 @@ import userBotIndexView from "@/views/user/bots/UserBotIndexView";
 import notFound from "@/views/error/NotFound";
 import userAccountLoginView from "@/views/user/account/UserAccountLoginView";
 import userAccountRegisterView from "@/views/user/account/UserAccountRegisterView";
+import store from "@/store";
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: BattleIndexView
+    component: BattleIndexView,
+    meta: {requestAuth: true}
   },
   {
     path: '/battle',
     name: 'battle_index',
-    component: BattleIndexView
+    component: BattleIndexView,
+    meta: {requestAuth: true}
   },
   {
     path: '/record',
     name: 'record_index',
-    component: recordIndexView
+    component: recordIndexView,
+    meta: {requestAuth: true}
   },
   {
     path: '/rank',
     name: 'rank_index',
-    component: rankIndexView
+    component: rankIndexView,
+    meta: {requestAuth: true}
   },
   {
     path: '/user/bots',
     name: 'user_bots_index',
-    component: userBotIndexView
+    component: userBotIndexView,
+    meta: {requestAuth: true}
   },
   {
     path: '/user/account/login/',
     name: 'user_account_login',
-    component: userAccountLoginView
+    component: userAccountLoginView,
+    meta: {requestAuth: false}
   },
   {
     path: '/user/account/register/',
     name: 'user_account_register',
-    component: userAccountRegisterView
+    component: userAccountRegisterView,
+    meta: {requestAuth: false}
   },
   {
     path: '/404',
@@ -57,6 +65,20 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requestAuth && !store.state.user.is_login) {
+    const jwt_token = localStorage.getItem("jwt_token")
+    if (jwt_token) {
+      store.commit("updateToken", jwt_token)
+      store.dispatch("getInfo").then(() => next())
+    } else {
+      next({name: "user_account_login"})
+    }
+  } else {
+    next()
+  }
 })
 
 export default router
