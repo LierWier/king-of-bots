@@ -55,6 +55,9 @@ export default {
           store.dispatch("getInfo", {
             success() {
               router.push({ name: 'home' })
+            },
+            error() {
+              console.log("getInfo failed")
             }
           })
         },

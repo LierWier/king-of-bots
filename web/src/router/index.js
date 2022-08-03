@@ -72,7 +72,14 @@ router.beforeEach((to, from, next) => {
     const jwt_token = localStorage.getItem("jwt_token")
     if (jwt_token) {
       store.commit("updateToken", jwt_token)
-      store.dispatch("getInfo").then(() => next())
+      store.dispatch("getInfo", {
+        success() {
+          next()
+        },
+        error() {
+          next({name: "user_account_login"})
+        }
+      }).then(() => {})
     } else {
       next({name: "user_account_login"})
     }
