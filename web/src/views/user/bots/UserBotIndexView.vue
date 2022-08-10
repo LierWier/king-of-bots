@@ -232,6 +232,8 @@ export default {
           if (resp.error_message === "success") {
             Modal.getInstance('#update-bot-modal-'+bot.id).hide()
             refresh_bots()
+          } else {
+            bot.error_message = resp.error_message
           }
         }
       })

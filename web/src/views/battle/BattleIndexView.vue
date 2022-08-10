@@ -1,16 +1,60 @@
 <template>
-  <my-card class="container mt-3">
-    <play-ground />
-  </my-card>
+  <div class="container mt-3">
+    <match-ground v-if="$store.state.battle.status !== 'playing'" />
+    <play-ground v-if="$store.state.battle.status === 'playing'" />
+  </div>
 </template>
 
 <script>
-import MyCard from "@/components/utils/MyCard";
 import PlayGround from "@/components/PlayGround";
+import {useStore} from "vuex";
+import {onMounted, onUnmounted} from "vue";
+import MatchGround from "@/components/MatchGround";
 
 export default {
   name: "BattleIndexView",
-  components: {PlayGround, MyCard}
+  components: {MatchGround, PlayGround},
+
+  setup() {
+    const store = useStore()
+    const socketUrl = `ws://127.0.0.1:3000/websocket/${store.state.user.token}/`
+    let socket = null
+
+    onMounted(() => {
+      store.commit("updateOpponent", {
+        username: `我的对手`,
+        photo: `https://cdn.acwing.com/media/article/image/2022/08/09/1_1db2488f17-anonymous.png`
+      })
+
+      socket = new WebSocket(socketUrl)
+      socket.onopen = () => {
+        console.log(`connected!`)
+        store.commit('updateSocket', socket)
+      }
+      socket.onmessage = (msg) => {
+        const data = JSON.parse(msg.data)
+        if (data.event === 'start-matching') {
+          store.commit('updateOpponent', {
+            username: data.opponent_username,
+            photo: data.opponent_photo
+          })
+          store.commit('updateStatus', 'matched')
+          store.commit('updateGameMap', data.game_map)
+          setTimeout(() => {
+            store.commit('updateStatus', 'playing')
+          }, 2000)
+        }
+      }
+      socket.onclose = () => {
+        console.log(`disconnected!`)
+      }
+    })
+
+    onUnmounted(() => {
+      socket.close()
+      store.commit('updateStatus', 'matching')
+    })
+  }
 }
 </script>
 
