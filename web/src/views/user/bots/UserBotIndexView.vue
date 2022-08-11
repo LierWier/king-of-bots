@@ -2,8 +2,28 @@
   <div class="container mt-3">
     <div class="row">
       <div class="col-3">
-        <my-card>
-          <img :src="$store.state.user.photo" alt="" style="width: 100%">
+        <my-card class="rounded">
+          <img :src="$store.state.user.photo" alt="" class="rounded" style="width: 100%">
+          <hr />
+          <div class="text-center fs-5 fw-bold">
+            {{ $store.state.user.username }}
+          </div>
+          <div class="text-center">
+            <div class="badge bg-warning m-1">No.1</div>
+            <div class="badge bg-danger m-1">VIP</div>
+            <div class="badge bg-success m-1">10连胜</div>
+          </div>
+          <hr />
+          <div class="row text-center text-secondary">
+            <div class="col">
+              <div>关注</div>
+              <div>1234</div>
+            </div>
+            <div class="col">
+              <div>粉丝</div>
+              <div>1234.5w</div>
+            </div>
+          </div>
         </my-card>
       </div>
       <div class="col-9">
@@ -67,44 +87,44 @@
                 <td>{{ bot.createTime }}</td>
                 <td>
                   <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" :data-bs-target="'#update-bot-modal-'+bot.id">修改</button>
-                    <button type="button" class="btn btn-danger" @click="remove_bot(bot)">删除</button>
-                    <!-- Modal -->
-                    <div class="modal fade" :id="'update-bot-modal-'+bot.id" tabindex="-1">
-                      <div class="modal-dialog modal-xl">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">创建Bot</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" :data-bs-target="'#update-bot-modal-'+bot.id">修改</button>
+                    <button type="button" class="btn btn-danger btn-sm" @click="remove_bot(bot)">删除</button>
+                  </div>
+                  <!-- Modal -->
+                  <div class="modal fade" :id="'update-bot-modal-'+bot.id" tabindex="-1">
+                    <div class="modal-dialog modal-xl">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">创建Bot</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="mb-3">
+                            <label for="add-bot-title" class="form-label">名称</label>
+                            <input v-model="bot.title" type="text" class="form-control" id="add-bot-title" placeholder="请输入Bot名称">
                           </div>
-                          <div class="modal-body">
-                            <div class="mb-3">
-                              <label for="add-bot-title" class="form-label">名称</label>
-                              <input v-model="bot.title" type="text" class="form-control" id="add-bot-title" placeholder="请输入Bot名称">
-                            </div>
-                            <div class="mb-3">
-                              <label for="add-bot-description" class="form-label">简介</label>
-                              <textarea v-model="bot.description" class="form-control" id="add-bot-description" rows="3" placeholder="请输入Bot简介"></textarea>
-                            </div>
-                            <div class="mb-3">
-                              <label for="add-bot-code" class="form-label">代码</label>
-                              <v-ace-editor
-                                  v-model:value="bot.content"
-                                  @init="editorInit"
-                                  lang="c_cpp"
-                                  theme="textmate"
-                                  style="height: 300px" />
-                            </div>
+                          <div class="mb-3">
+                            <label for="add-bot-description" class="form-label">简介</label>
+                            <textarea v-model="bot.description" class="form-control" id="add-bot-description" rows="3" placeholder="请输入Bot简介"></textarea>
                           </div>
-                          <div class="modal-footer">
-                            <div class="error-message me-3">{{ bot.error_message }}</div>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                            <button type="button" class="btn btn-primary" @click="update_bot(bot)">保存</button>
+                          <div class="mb-3">
+                            <label for="add-bot-code" class="form-label">代码</label>
+                            <v-ace-editor
+                                v-model:value="bot.content"
+                                @init="editorInit"
+                                lang="c_cpp"
+                                theme="textmate"
+                                style="height: 300px" />
                           </div>
+                        </div>
+                        <div class="modal-footer">
+                          <div class="error-message me-3">{{ bot.error_message }}</div>
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                          <button type="button" class="btn btn-primary" @click="update_bot(bot)">保存</button>
                         </div>
                       </div>
                     </div>
-                  </div>
+                </div>
                 </td>
               </tr>
               </tbody>
@@ -114,16 +134,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Toast -->
-<!--  <div id="add-finish-toast" class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">-->
-<!--    <div class="d-flex">-->
-<!--      <div class="toast-body">-->
-<!--        Hello, world! This is a toast message.-->
-<!--      </div>-->
-<!--      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>-->
-<!--    </div>-->
-<!--  </div>-->
 </template>
 
 <script>
@@ -252,5 +262,11 @@ export default {
 <style scoped>
 div.error-message {
   color: red;
+}
+/*.table>tbody>tr {*/
+/*  height: 10vh;*/
+/*}*/
+.table>tbody>tr>td {
+  line-height: 6vh;
 }
 </style>

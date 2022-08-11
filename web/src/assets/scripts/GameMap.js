@@ -3,12 +3,12 @@ import {Wall} from "@/assets/scripts/Wall";
 import {Snake} from "@/assets/scripts/Snake";
 
 export class GameMap extends AcGameObject {
-    constructor(ctx, parent, game_map) {
+    constructor(ctx, parent, store) {
         super();
 
         this.ctx = ctx;
         this.parent = parent;
-        this.game_map = game_map;
+        this.store = store
         this.L = 0
 
         this.rows = 13
@@ -34,7 +34,7 @@ export class GameMap extends AcGameObject {
 
     // 创建墙函数
     create_walls() {
-        const g = this.game_map
+        const g = this.store.state.battle.game_map
         // 生成墙
         for (let r = 0; r < this.rows; r ++ ) {
             for (let c = 0; c < this.cols; c ++ ) {
@@ -47,16 +47,32 @@ export class GameMap extends AcGameObject {
 
     add_listening_events() {
         this.ctx.canvas.focus()
-        const [snake0, snake1] = this.snakes
+        // const [snake0, snake1] = this.snakes
         this.ctx.canvas.addEventListener("keydown", e => {
-            if (e.key === 'w') snake0.set_direction(0)
-            else if (e.key === 'd') snake0.set_direction(1)
-            else if (e.key === 's') snake0.set_direction(2)
-            else if (e.key === 'a') snake0.set_direction(3)
-            else if (e.key === 'ArrowUp') snake1.set_direction(0)
-            else if (e.key === 'ArrowRight') snake1.set_direction(1)
-            else if (e.key === 'ArrowDown') snake1.set_direction(2)
-            else if (e.key === 'ArrowLeft') snake1.set_direction(3)
+            let d = -1
+            if (e.key === 'ArrowUp') d = 0
+            else if (e.key === 'ArrowRight') d = 1
+            else if (e.key === 'ArrowDown') d = 2
+            else if (e.key === 'ArrowLeft') d = 3
+
+            if (d >= 0) {
+                this.store.state.battle.socket.send(
+                    JSON.stringify({
+                        event: "move",
+                        direction: d
+                    })
+                )
+            }
+
+            // 双人本地操作
+            // if (e.key === 'w') snake0.set_direction(0)
+            // else if (e.key === 'd') snake0.set_direction(1)
+            // else if (e.key === 's') snake0.set_direction(2)
+            // else if (e.key === 'a') snake0.set_direction(3)
+            // else if (e.key === 'ArrowUp') snake1.set_direction(0)
+            // else if (e.key === 'ArrowRight') snake1.set_direction(1)
+            // else if (e.key === 'ArrowDown') snake1.set_direction(2)
+            // else if (e.key === 'ArrowLeft') snake1.set_direction(3)
         })
     }
 

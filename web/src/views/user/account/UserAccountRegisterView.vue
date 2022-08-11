@@ -5,7 +5,7 @@
     </symbol>
   </svg>
 
-  <my-card class="container mt-3">
+  <div class="container mt-3">
     <div class="row justify-content-md-center">
       <my-card class="col col-md-auto m-4">
         <form @submit.prevent="register">
@@ -33,7 +33,7 @@
         </div>
       </my-card>
     </div>
-  </my-card>
+  </div>
 </template>
 
 <script>

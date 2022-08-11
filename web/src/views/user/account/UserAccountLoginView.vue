@@ -1,5 +1,5 @@
 <template>
-  <my-card class="container mt-3">
+  <div class="container mt-3">
     <div class="row justify-content-md-center">
       <my-card class="col col-md-auto m-4">
         <form @submit.prevent="login">
@@ -24,7 +24,7 @@
         </div>
       </my-card>
     </div>
-  </my-card>
+  </div>
 </template>
 
 <script>
@@ -73,5 +73,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

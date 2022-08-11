@@ -39,10 +39,28 @@ export default {
             photo: data.opponent_photo
           })
           store.commit('updateStatus', 'matched')
-          store.commit('updateGameMap', data.game_map)
+          store.commit('updateGame', data.game)
           setTimeout(() => {
             store.commit('updateStatus', 'playing')
-          }, 2000)
+          }, 1000)
+        } else if (data.event === 'move') {
+          console.log(data)
+          const game = store.state.battle.gameObject
+          const [snakeA, snakeB] = game.snakes
+          snakeA.set_direction(data.a_direction)
+          snakeB.set_direction(data.b_direction)
+        } else if (data.event === 'result') {
+          console.log(data)
+          const game = store.state.battle.gameObject
+          const [snakeA, snakeB] = game.snakes
+
+          if (data.loser === 'all') {
+            snakeA.status = snakeB.status = 'die'
+          } else if (data.loser === 'A') {
+            snakeA.status = 'die'
+          } else if (data.loser === "B") {
+            snakeB.status = 'die'
+          }
         }
       }
       socket.onclose = () => {

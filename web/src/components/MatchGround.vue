@@ -18,9 +18,15 @@
         </div>
       </div>
       <div class="col-12 text-center ">
-        <div v-if="$store.state.battle.status==='matched'" type="button" class="btn btn-success fw-bold">匹配成功</div>
+        <div v-if="$store.state.battle.status==='matched'" type="button" class="btn btn-success fw-bold">
+          匹配成功
+          <span class="ms-2">√</span>
+        </div>
         <button v-else-if="btn_display==='开始匹配'" type="button" class="btn btn-warning fw-bold" @click="match_start">开始匹配</button>
-        <button v-else-if="btn_display==='取消匹配'" type="button" class="btn btn-danger fw-bold" @click="match_cancel" >取消匹配</button>
+        <button v-else-if="btn_display==='取消匹配'" type="button" class="btn btn-danger fw-bold" @click="match_cancel" >
+          取消匹配
+          <span class="spinner-border spinner-border-sm ms-2 text-light" role="status"></span>
+        </button>
       </div>
     </div>
   </div>
