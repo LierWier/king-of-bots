@@ -83,7 +83,8 @@ export class GameMap extends AcGameObject {
 
     update_size() {
         // 【~~】解决白缝问题
-        this.L = ~~Math.min(this.parent.clientWidth / this.cols, this.parent.clientHeight / this.rows)
+        // this.L = ~~Math.min(this.parent.clientWidth / this.cols, this.parent.clientHeight / this.rows)
+        this.L = ~~(this.parent.clientWidth / this.cols)
         this.ctx.canvas.width = this.L * this.cols
         this.ctx.canvas.height = this.L * this.rows
     }

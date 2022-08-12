@@ -1,7 +1,21 @@
 <template>
   <div class="container mt-3">
     <match-ground v-if="$store.state.battle.status !== 'playing'" />
-    <play-ground v-if="$store.state.battle.status === 'playing'" />
+    <div class="row" v-if="$store.state.battle.status === 'playing'">
+      <div class="col-3">
+        <battle-info />
+      </div>
+      <div class="col-6">
+        <my-card>
+          <play-ground />
+        </my-card>
+      </div>
+      <div class="col-3">
+        <my-card>
+          操作
+        </my-card>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -10,10 +24,12 @@ import PlayGround from "@/components/PlayGround";
 import {useStore} from "vuex";
 import {onMounted, onUnmounted} from "vue";
 import MatchGround from "@/components/MatchGround";
+import MyCard from "@/components/utils/MyCard";
+import BattleInfo from "@/components/BattleInfo";
 
 export default {
   name: "BattleIndexView",
-  components: {MatchGround, PlayGround},
+  components: {BattleInfo, MyCard, MatchGround, PlayGround},
 
   setup() {
     const store = useStore()
@@ -21,10 +37,7 @@ export default {
     let socket = null
 
     onMounted(() => {
-      store.commit("updateOpponent", {
-        username: `我的对手`,
-        photo: `https://cdn.acwing.com/media/article/image/2022/08/09/1_1db2488f17-anonymous.png`
-      })
+      store.commit("updateOpponent", store.state.battle.opponent_default)
 
       socket = new WebSocket(socketUrl)
       socket.onopen = () => {
@@ -61,6 +74,7 @@ export default {
           } else if (data.loser === "B") {
             snakeB.status = 'die'
           }
+          store.commit('updateLoser', data.loser)
         }
       }
       socket.onclose = () => {
@@ -71,6 +85,8 @@ export default {
     onUnmounted(() => {
       socket.close()
       store.commit('updateStatus', 'matching')
+      store.commit('updateLoser', 'none')
+      store.commit("updateOpponent", store.state.battle.opponent_default)
     })
   }
 }

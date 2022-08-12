@@ -2,22 +2,20 @@ package com.kob.backend.consumer.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kob.backend.consumer.WebSocketServer;
+import com.kob.backend.pojo.Record;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Game extends Thread {
     private final Integer rows;
     private final Integer cols;
     private final Integer inner_walls_count;
-    private final boolean[][] g;
+    private final int[][] g;
     private final Player playerA, playerB;
     private Integer nextStepA = null;
     private Integer nextStepB = null;
-    private ReentrantLock lock = new ReentrantLock();
+    private final ReentrantLock lock = new ReentrantLock();
     private String status = "playing";
     private String loser = ""; // all:平局, A:A输, B:B输
 
@@ -25,13 +23,13 @@ public class Game extends Thread {
         this.rows = rows;
         this.cols = cols;
         this.inner_walls_count = inner_walls_count;
-        this.g = new boolean[rows][cols];
+        this.g = new int[rows][cols];
         this.creatMap();
         playerA = new Player(idA, rows - 2, 1, new ArrayList<>());
         playerB = new Player(idB, 1, cols - 2, new ArrayList<>());
     }
 
-    public boolean[][] getG() {
+    public int[][] getG() {
         return g;
     }
 
@@ -66,16 +64,16 @@ public class Game extends Thread {
         // 初始
         for (int i = 0; i < this.rows; i++) {
             for (int j = 0; j < this.cols; j++) {
-                g[i][j] = false;
+                g[i][j] = 0;
             }
         }
 
         // 围墙
         for (int r = 0; r < this.rows; r++) {
-            g[r][0] = g[r][this.cols - 1] = true;
+            g[r][0] = g[r][this.cols - 1] = 1;
         }
         for (int c = 0; c < this.cols; c++) {
-            g[0][c] = g[this.rows - 1][c] = true;
+            g[0][c] = g[this.rows - 1][c] = 1;
         }
 
         // 创建随机墙
@@ -85,7 +83,7 @@ public class Game extends Thread {
                 int r = random.nextInt(this.rows);
                 int c = random.nextInt(this.cols);
                 // 若墙体存在
-                if (g[r][c]) continue;
+                if (g[r][c] == 1) continue;
                 // 若墙体刷在出生点
                 if (r == this.rows - 2 && c == 1 || r == 1 && c == this.cols - 2)
                     continue;
@@ -94,12 +92,12 @@ public class Game extends Thread {
                 // g[r][c] = g[c][r] = true
 
                 // 中心轴对称墙
-                g[r][c] = g[this.rows - 1 - r][this.cols - 1 - c] = true;
+                g[r][c] = g[this.rows - 1 - r][this.cols - 1 - c] = 1;
                 break;
             }
         }
 
-        boolean[][] copy_g = new boolean[g.length][];
+        int[][] copy_g = new int[g.length][];
         for (int i = 0; i < g.length; i++) {
             copy_g[i] = g[i].clone();
         }
@@ -115,14 +113,14 @@ public class Game extends Thread {
     }
 
     // 判断地图连通性
-    public boolean check_connectivity(boolean[][] g, int sx, int sy, int tx, int ty) {
+    public boolean check_connectivity(int[][] g, int sx, int sy, int tx, int ty) {
         if (sx == tx && sy == ty) return true;
-        g[sx][sy] = true;
+        g[sx][sy] = 1;
 
         int[] dx = {-1, 0, 1, 0}, dy = {0, 1, 0, -1};
         for (int i = 0; i < 4; i++) {
             int x = sx + dx[i], y = sy + dy[i];
-            if (!g[x][y] && this.check_connectivity(g, x, y, tx, ty))
+            if (g[x][y] == 0 && this.check_connectivity(g, x, y, tx, ty))
                 return true;
         }
         return false;
@@ -130,9 +128,11 @@ public class Game extends Thread {
 
     // 等待两名玩家的下一步操作
     private boolean nextStep() {
-        for (int i = 0; i < 10; i++) {
+        int waitTime = 10000;  // 等待操作时间(ms)
+        int respTime = 100;  // 响应操作时间(ms)
+        for (int i = 0; i < waitTime / respTime; i++) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(respTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -156,7 +156,7 @@ public class Game extends Thread {
         int n = cellsA.size();
         Cell cell = cellsA.get(n - 1);
         // 判断是否撞墙
-        if (g[cell.x][cell.y]) return false;
+        if (g[cell.x][cell.y] == 1) return false;
 
         // 判断是否撞到自己
         for (int i = 0; i < n - 1; i++) {
@@ -208,11 +208,40 @@ public class Game extends Thread {
         }
     }
 
+    private String getMapString() {
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < this.rows; i++) {
+            for (int j = 0; j < this.cols; j++) {
+                res.append(g[i][j]);
+            }
+        }
+        return res.toString();
+    }
+
+    private void saveToDatabase() {
+        Record record = new Record(
+                null,
+                playerA.getId(),
+                playerA.getSx(),
+                playerA.getSy(),
+                playerB.getId(),
+                playerB.getSx(),
+                playerB.getSy(),
+                playerA.getStepsString(),
+                playerB.getStepsString(),
+                getMapString(),
+                loser,
+                new Date()
+        );
+        WebSocketServer.recordMapper.insert(record);
+    }
+
     // 游戏结束公布结果
     private void sendResult() {
         JSONObject resp = new JSONObject();
         resp.put("event", "result");
         resp.put("loser", loser);
+        saveToDatabase();
         sendAllMessage(resp.toJSONString());
     }
 
