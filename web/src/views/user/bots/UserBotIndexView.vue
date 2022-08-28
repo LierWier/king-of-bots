@@ -57,7 +57,6 @@
                       <label for="add-bot-code" class="form-label">代码</label>
                       <v-ace-editor
                           v-model:value="bot_add.content"
-                          @init="editorInit"
                           lang="c_cpp"
                           theme="textmate"
                           style="height: 300px" />
@@ -111,7 +110,6 @@
                             <label for="add-bot-code" class="form-label">代码</label>
                             <v-ace-editor
                                 v-model:value="bot.content"
-                                @init="editorInit"
                                 lang="c_cpp"
                                 theme="textmate"
                                 style="height: 300px" />
