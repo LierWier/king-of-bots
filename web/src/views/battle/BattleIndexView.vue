@@ -8,6 +8,13 @@
       <div class="col-6">
         <my-card>
           <play-ground />
+          <div class="">
+            你是:
+            <span :class="'badge rounded-pill '+($store.state.battle.playerA.id===$store.state.user.id?'bg-primary':'bg-danger')">
+              {{ $store.state.battle.playerA.id === $store.state.user.id ? '蓝色方' : '红色方'}}
+            </span>
+          </div>
+          <result-board v-if="$store.state.battle.loser !== 'none'" />
         </my-card>
       </div>
       <div class="col-3">
@@ -26,10 +33,11 @@ import {onMounted, onUnmounted} from "vue";
 import MatchGround from "@/components/MatchGround";
 import MyCard from "@/components/utils/MyCard";
 import BattleInfo from "@/components/BattleInfo";
+import ResultBoard from "@/components/ResultBoard";
 
 export default {
   name: "BattleIndexView",
-  components: {BattleInfo, MyCard, MatchGround, PlayGround},
+  components: {ResultBoard, BattleInfo, MyCard, MatchGround, PlayGround},
 
   setup() {
     const store = useStore()
@@ -37,6 +45,7 @@ export default {
     let socket = null
 
     store.commit("updateLoser", "none")
+    store.commit("updateIsRecord", false)
 
     onMounted(() => {
       store.commit("updateOpponent", store.state.battle.opponent_default)

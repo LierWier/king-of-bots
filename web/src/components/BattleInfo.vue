@@ -16,11 +16,11 @@
         </div>
       </div>
     </div>
-    <div class="mt-1">
-      <div class="badge bg-warning m-1">No.1</div>
-      <div class="badge bg-danger m-1">VIP</div>
-      <div class="badge bg-success m-1">10连胜</div>
-    </div>
+<!--    <div class="mt-1">-->
+<!--      <div class="badge bg-warning m-1">No.1</div>-->
+<!--      <div class="badge bg-danger m-1">VIP</div>-->
+<!--      <div class="badge bg-success m-1">10连胜</div>-->
+<!--    </div>-->
     <hr />
     <!--  对手  -->
     <div class="row">
@@ -38,11 +38,11 @@
         </div>
       </div>
     </div>
-    <div class="mt-1">
-      <div class="badge bg-warning m-1">No.2</div>
-      <div class="badge bg-danger m-1">VIP</div>
-      <div class="badge bg-success m-1">7连胜</div>
-    </div>
+<!--    <div class="mt-1">-->
+<!--      <div class="badge bg-warning m-1">No.2</div>-->
+<!--      <div class="badge bg-danger m-1">VIP</div>-->
+<!--      <div class="badge bg-success m-1">7连胜</div>-->
+<!--    </div>-->
     <hr />
     <div class="chat-box w-100 rounded p-3">
       <div class="text-center">

@@ -8,22 +8,22 @@
           <div class="text-center fs-5 fw-bold">
             {{ $store.state.user.username }}
           </div>
-          <div class="text-center">
-            <div class="badge bg-warning m-1">No.1</div>
-            <div class="badge bg-danger m-1">VIP</div>
-            <div class="badge bg-success m-1">10连胜</div>
-          </div>
-          <hr />
-          <div class="row text-center text-secondary">
-            <div class="col">
-              <div>关注</div>
-              <div>1234</div>
-            </div>
-            <div class="col">
-              <div>粉丝</div>
-              <div>1234.5w</div>
-            </div>
-          </div>
+<!--          <div class="text-center">-->
+<!--            <div class="badge bg-warning m-1">No.1</div>-->
+<!--            <div class="badge bg-danger m-1">VIP</div>-->
+<!--            <div class="badge bg-success m-1">10连胜</div>-->
+<!--          </div>-->
+<!--          <hr />-->
+<!--          <div class="row text-center text-secondary">-->
+<!--            <div class="col">-->
+<!--              <div>关注</div>-->
+<!--              <div>1234</div>-->
+<!--            </div>-->
+<!--            <div class="col">-->
+<!--              <div>粉丝</div>-->
+<!--              <div>1234.5w</div>-->
+<!--            </div>-->
+<!--          </div>-->
         </my-card>
       </div>
       <div class="col-9">
