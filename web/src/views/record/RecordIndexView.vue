@@ -30,7 +30,7 @@
         </td>
         <td>
           <button
-              type="button" class="btn btn-secondary btn-sm"
+              type="button" class="btn btn-primary btn-sm"
               @click="open_record_content(record.record.id)"
           >查看
           </button>
@@ -83,7 +83,7 @@ export default {
     const pull_page = (page) => {
       current_page = page
       $.ajax({
-        url: "http://127.0.0.1:3000/record/getrecordlist/",
+        url: "https://app2711.acapp.acwing.com.cn/api/record/getrecordlist/",
         type: "get",
         headers: {
           Authorization: "Bearer " + store.state.user.token
@@ -189,5 +189,8 @@ export default {
 <style scoped>
 img.record-user-photo {
   width: 4vh;
+}
+.table>tbody>tr>td {
+  line-height: 4vh;
 }
 </style>

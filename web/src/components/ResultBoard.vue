@@ -16,7 +16,7 @@
     </div>
     <div class="text-center h-25">
       <button type="button" class="btn btn-secondary m-2" @click="quit">返回大厅</button>
-      <button type="button" class="btn btn-warning m-1" @click="again">再来一局</button>
+<!--      <button type="button" class="btn btn-warning m-1" @click="again">再来一局</button>-->
     </div>
   </div>
 </template>

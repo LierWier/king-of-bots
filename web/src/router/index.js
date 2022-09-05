@@ -8,6 +8,8 @@ import userAccountLoginView from "@/views/user/account/UserAccountLoginView";
 import userAccountRegisterView from "@/views/user/account/UserAccountRegisterView";
 import store from "@/store";
 import recordContentView from "@/views/record/RecordContentView";
+import localBattleIndexView from "@/views/localBattle/LocalBattleIndexView";
+import localBattleContentView from "@/views/localBattle/LocalBattleContentView";
 
 const routes = [
   {
@@ -21,6 +23,18 @@ const routes = [
     name: 'battle_index',
     component: BattleIndexView,
     meta: {requestAuth: true}
+  },
+  {
+    path: '/local',
+    name: 'local_battle',
+    component: localBattleIndexView,
+    meta: {requestAuth: false}
+  },
+  {
+    path: '/local/game',
+    name: 'local_battle_game',
+    component: localBattleContentView,
+    meta: {requestAuth: false}
   },
   {
     path: '/record',

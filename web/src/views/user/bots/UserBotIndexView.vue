@@ -75,13 +75,15 @@
             <table class="table table-striped table-hover">
               <thead>
               <tr>
+                <th>#</th>
                 <th>名称</th>
                 <th>创建时间</th>
                 <th>操作</th>
               </tr>
               </thead>
               <tbody>
-              <tr v-for="bot in bots" :key="bot.id">
+              <tr v-for="(bot, index) in bots" :key="bot.id">
+                <td>{{ index + 1 }}</td>
                 <td>{{ bot.title }}</td>
                 <td>{{ bot.createTime }}</td>
                 <td>
@@ -164,7 +166,7 @@ export default {
 
     const refresh_bots = () => {
       $.ajax({
-        url: "http://127.0.0.1:3000/user/bot/getlist/",
+        url: "https://app2711.acapp.acwing.com.cn/api/user/bot/getlist/",
         type: "get",
         headers: {
           Authorization: "Bearer " + store.state.user.token
@@ -181,7 +183,7 @@ export default {
     const add_bot = () => {
       bot_add.error_message = ""
       $.ajax({
-        url: "http://127.0.0.1:3000/user/bot/add/",
+        url: "https://app2711.acapp.acwing.com.cn/api/user/bot/add/",
         type: "post",
         headers: {
           Authorization: "Bearer " + store.state.user.token
@@ -207,7 +209,7 @@ export default {
 
     const remove_bot = (bot) => {
       $.ajax({
-        url: "http://127.0.0.1:3000/user/bot/remove/",
+        url: "https://app2711.acapp.acwing.com.cn/api/user/bot/remove/",
         type: "post",
         headers: {
           Authorization: "Bearer " + store.state.user.token
@@ -225,7 +227,7 @@ export default {
 
     const update_bot = (bot) => {
       $.ajax({
-        url: "http://127.0.0.1:3000/user/bot/update/",
+        url: "https://app2711.acapp.acwing.com.cn/api/user/bot/update/",
         type: "post",
         headers: {
           Authorization: "Bearer " + store.state.user.token

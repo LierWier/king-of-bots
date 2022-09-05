@@ -1,9 +1,12 @@
 package com.kob.botrunningsystem.utils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-public class Bot implements com.kob.botrunningsystem.utils.BotInterface{
+public class Bot implements java.util.function.Supplier<Integer> {
     static class Cell {
         public int x, y;
         public Cell(int x, int y) {
@@ -36,12 +39,11 @@ public class Bot implements com.kob.botrunningsystem.utils.BotInterface{
         return res;
     }
 
-    @Override
     public Integer nextMove(String input) {
         String[] strs = input.split("#");
         int[][] g = new int[13][14];
         for (int i = 0, k = 0; i < 13; i++) {
-            for (int j = 0; j < 14; j++) {
+            for (int j = 0; j < 14; j++, k++) {
                 if (strs[0].charAt(k) == '1') {
                     g[i][j] = 1;
                 }
@@ -60,11 +62,22 @@ public class Bot implements com.kob.botrunningsystem.utils.BotInterface{
         int[] dx = {-1, 0, 1, 0}, dy = {0, 1, 0, -1};
         for (int i = 0; i < 4; i++) {
             int x = aCells.get(aCells.size() - 1).x + dx[i];
-            int y = aCells.get(aCells.size() - 1).x + dy[i];
-            if (x >= 0 && x < 13 && y >= 0 && y <= 14 && g[x][y] == 0) {
+            int y = aCells.get(aCells.size() - 1).y + dy[i];
+            if (x >= 0 && x < 13 && y >= 0 && y < 14 && g[x][y] == 0) {
                 return i;
             }
         }
         return 0;
+    }
+
+    @Override
+    public Integer get() {
+        File file = new File("input.txt");
+        try {
+            Scanner sc = new Scanner(file);
+            return nextMove(sc.next());
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
