@@ -15,67 +15,100 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: BattleIndexView,
-    meta: {requestAuth: true}
-  },
-  {
-    path: '/battle',
-    name: 'battle_index',
-    component: BattleIndexView,
-    meta: {requestAuth: true}
+    component: localBattleIndexView,
+    meta: {
+      title: 'King of Bots',
+      requestAuth: false
+    }
   },
   {
     path: '/local',
     name: 'local_battle',
     component: localBattleIndexView,
-    meta: {requestAuth: false}
+    meta: {
+      title: 'King of Bots',
+      requestAuth: false
+    }
   },
   {
     path: '/local/game',
     name: 'local_battle_game',
     component: localBattleContentView,
-    meta: {requestAuth: false}
+    meta: {
+      title: 'King of Bots',
+      requestAuth: false
+    }
+  },
+  {
+    path: '/battle',
+    name: 'battle_index',
+    component: BattleIndexView,
+    meta: {
+      title: 'King of Bots',
+      requestAuth: true
+    }
   },
   {
     path: '/record',
     name: 'record_index',
     component: recordIndexView,
-    meta: {requestAuth: true}
+    meta: {
+      title: 'King of Bots - 对局列表',
+      requestAuth: true
+    }
   },
   {
     path: '/record/:recordId',
     name: 'record_content',
     component: recordContentView,
-    meta: {requestAuth: true}
+    meta: {
+      title: 'King of Bots - 对局回放',
+      requestAuth: true
+    }
   },
   {
     path: '/rank',
     name: 'rank_index',
     component: rankIndexView,
-    meta: {requestAuth: true}
+    meta: {
+      title: 'King of Bots - 排行榜',
+      requestAuth: true
+    }
   },
   {
     path: '/user/bots',
     name: 'user_bots_index',
     component: userBotIndexView,
-    meta: {requestAuth: true}
+    meta: {
+      title: 'King of Bots - 我的bots',
+      requestAuth: true
+    }
   },
   {
     path: '/user/account/login/',
     name: 'user_account_login',
     component: userAccountLoginView,
-    meta: {requestAuth: false}
+    meta: {
+      title: 'King of Bots - 登录',
+      requestAuth: false
+    }
   },
   {
     path: '/user/account/register/',
     name: 'user_account_register',
     component: userAccountRegisterView,
-    meta: {requestAuth: false}
+    meta: {
+      title: 'King of Bots - 注册',
+      requestAuth: false
+    }
   },
   {
     path: '/404',
     name: '404',
-    component: notFound
+    component: notFound,
+    meta: {
+      title: '找不到页面',
+    }
   },
   {
     path: '/:catchAll(.*)',
@@ -89,6 +122,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  window.document.title = to.meta.title
   if (to.meta.requestAuth && !store.state.user.is_login) {
     const jwt_token = localStorage.getItem("jwt_token")
     if (jwt_token) {
